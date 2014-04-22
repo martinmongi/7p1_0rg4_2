@@ -11,6 +11,9 @@ global trie_pesar
 
 extern malloc
 extern free
+extern fopen
+extern fprintf
+extern fclose
 
 ; SE RECOMIENDA COMPLETAR LOS DEFINES CON LOS VALORES CORRECTOS
 %define offset_sig 0
@@ -38,6 +41,9 @@ section .rodata
 
 section .data
 
+append: DB 'a', 0
+vacio: DB '<vacio>', 10, 0
+
 section .text
 
 ; FUNCIONES OBLIGATORIAS. PUEDEN CREAR LAS FUNCIONES AUXILIARES QUE CREAN CONVENIENTES
@@ -49,6 +55,7 @@ trie_crear:
 	MOV RDI, size_trie ;parametro de malloc
 	call malloc
 	;RAX ya tiene el puntero del bloque de memoria pedido, no hace falta moverlo
+	MOV qword [RAX + offset_raiz], NULL
 
 	POP RBP
 	RET
@@ -76,7 +83,39 @@ trie_construir:
 	; COMPLETAR AQUI EL CODIGO
 
 trie_imprimir:
-	; COMPLETAR AQUI EL CODIGO
+		PUSH RBP
+		MOV RBP, RSP
+		PUSH RBX
+		PUSH R12
+
+		MOV RBX, RDI ; Trie en RBX
+		MOV R12, RSI ; Nombre_archivo en R12
+
+		MOV RDI, R12
+		MOV RSI, append
+		MOV RAX, 8
+		call fopen
+		MOV R12, RAX ;Puntero a archivo en R12
+
+		CMP qword [RBX + offset_raiz], NULL
+		JE .trie_vacio
+		JMP .cerrar
+
+	.trie_vacio:
+		MOV RDI, R12
+		MOV RSI, vacio
+		MOV RAX, 8
+		call fprintf
+
+	.cerrar:
+		MOV RDI, R12
+		MOV RAX, 8
+		call fclose
+
+		POP R12
+		POP RBX
+		POP RBP
+		RET
 
 buscar_palabra:
 	; COMPLETAR AQUI EL CODIGO

@@ -1,6 +1,7 @@
 #ifndef _T9_H_
 #define _T9_H_
 
+#include <stdio.h>
 #include <stdbool.h>
 #include "listaP.h"
 
