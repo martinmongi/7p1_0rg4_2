@@ -1,14 +1,16 @@
-; global trie_crear
+global trie_crear
 global nodo_crear
 global insertar_nodo_en_nivel
 global trie_agregar_palabra
 global trie_construir
-; global trie_borrar
+global trie_borrar
 global trie_imprimir
 global buscar_palabra
 global palabras_con_prefijo
 global trie_pesar
 
+extern malloc
+extern free
 
 ; SE RECOMIENDA COMPLETAR LOS DEFINES CON LOS VALORES CORRECTOS
 %define offset_sig 0
@@ -41,10 +43,25 @@ section .text
 ; FUNCIONES OBLIGATORIAS. PUEDEN CREAR LAS FUNCIONES AUXILIARES QUE CREAN CONVENIENTES
 
 trie_crear:
-	; COMPLETAR AQUI EL CODIGO
+	PUSH RBP
+	MOV RBP,RSP
+
+	MOV RDI, size_trie ;parametro de malloc
+	call malloc
+	;RAX ya tiene el puntero del bloque de memoria pedido, no hace falta moverlo
+
+	POP RBP
+	RET
 
 trie_borrar:
-	; COMPLETAR AQUI EL CODIGO
+	PUSH RBP
+	MOV RBP, RSP
+
+	;RDI ya tiene el puntero de bloque a hacer free, no hace falta moverlo
+	call free
+
+	POP RBP
+	RET
 
 nodo_crear:
 	; COMPLETAR AQUI EL CODIGO
