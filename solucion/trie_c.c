@@ -20,6 +20,45 @@ void trie_imprimir(trie *t, char *nombre_archivo){
 		fprintf(f, "<vacio> \n");
 	fclose(f);
 }
+
+nodo *nodo_crear(char c){
+	nodo* n = malloc(sizeof(nodo));
+	n->sig = NULL;
+	n->hijos = NULL;
+	if(c < '0')
+		n->c = 'a';
+	else if(c <= '9')
+		n->c = c;
+	else if(c < 'A')
+		n->c = 'a';
+	else if(c <= 'Z')
+		n->c = c + 32;
+	else if(c < 'a')
+		n->c = 'a';
+	else if(c <= 'z')
+		n->c = c;
+	else
+		n->c = 'a';
+	n->fin = false;
+	return n;
+}
+*/
+
+nodo *insertar_nodo_en_nivel(nodo **nivel, char c){
+	while((*nivel) != NULL)
+		nivel = &((*nivel)->sig); 
+	nodo* n = nodo_crear(c);
+	*nivel = n;
+	return n;
+}
+
+/*
+void nodo_borrar(nodo* n){
+	if(n == NULL) return;
+	nodo_borrar(n->hijos);
+	nodo_borrar(n->sig);
+	free(n);
+}
 */
 
 // Completar las funciones en C.

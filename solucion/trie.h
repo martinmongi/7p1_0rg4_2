@@ -37,6 +37,9 @@ double trie_pesar(trie *t, double (*funcion_pesaje)(char*));
 listaP *palabras_con_prefijo(trie *t, char *pref);
 listaP *predecir_palabras(trie *t, char *teclas);
 
+/* Funciones Auxiliares */
+void nodo_borrar(nodo *n);
+
 #ifdef __cplusplus 
 }
 #endif
