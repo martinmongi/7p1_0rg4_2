@@ -25,31 +25,41 @@ nodo *nodo_crear(char c){
 	nodo* n = malloc(sizeof(nodo));
 	n->sig = NULL;
 	n->hijos = NULL;
-	if(c < '0')
-		n->c = 'a';
-	else if(c <= '9')
-		n->c = c;
-	else if(c < 'A')
-		n->c = 'a';
-	else if(c <= 'Z')
-		n->c = c + 32;
-	else if(c < 'a')
-		n->c = 'a';
-	else if(c <= 'z')
-		n->c = c;
-	else
-		n->c = 'a';
+	n->c = normalizar(c);
 	n->fin = false;
 	return n;
 }
 */
 
 nodo *insertar_nodo_en_nivel(nodo **nivel, char c){
-	while((*nivel) != NULL)
-		nivel = &((*nivel)->sig); 
+	c = normalizar(c);
+
+	while(((*nivel) != NULL) && ((*nivel)->c < c))
+		nivel = &((*nivel)->sig);
+
+	if(((*nivel) != NULL) && ((*nivel)->c == c)){
+		printf("Nodo insertado: NO\tP: %p\tHijos: %p\tSig: %p\tChar: %c\n", (void*)(*nivel), (void*)(*nivel)->hijos, (void*)(*nivel)->sig, (*nivel)->c);
+		return (*nivel); //El nodo ya estaba insertado
+	}
+
 	nodo* n = nodo_crear(c);
+	n->sig = *nivel;
 	*nivel = n;
+	printf("Nodo insertado: SI\tP: %p\tHijos: %p\tSig: %p\tChar: %c\n", (void*)(*nivel), (void*)(*nivel)->hijos, (void*)(*nivel)->sig, (*nivel)->c);
 	return n;
+}
+
+void trie_agregar_palabra(trie *t, char *p){
+	nodo **n = &t->raiz;
+	int i = 0;
+	nodo* h;
+
+	while(p[i] != '\0'){
+		h = insertar_nodo_en_nivel(n,p[i]);
+		n = &h->hijos;
+		i++;
+	}
+	h->fin = true;
 }
 
 /*
@@ -70,3 +80,7 @@ listaP *predecir_palabras(trie *t, char *teclas) {
 double peso_palabra(char *palabra) {
 	// COMPLETAR AQUI EL CODIGO
 }
+
+// listaP *palabras(nodo **n, char *prefijo){
+
+// }

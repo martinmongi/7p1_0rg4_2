@@ -1,13 +1,14 @@
 global trie_crear
 global nodo_crear
 ; global insertar_nodo_en_nivel
-global trie_agregar_palabra
+; global trie_agregar_palabra
 global trie_construir
 global trie_borrar
 global trie_imprimir
 global buscar_palabra
 global palabras_con_prefijo
 global trie_pesar
+global normalizar
 
 extern malloc
 extern free
@@ -89,7 +90,13 @@ nodo_crear:
 		MOV RBP,RSP
 		PUSH RBX
 
-		MOV DIL, BL ; char en BL
+		;c en DIL
+		SUB RSP, 8
+		call normalizar
+		ADD RSP, 8
+		MOV DIL, AL
+
+		MOV BL, DIL ; char en BL
 		MOV RDI, size_nodo ;parametro de malloc
 		SUB RSP, 8
 		call malloc
@@ -97,34 +104,7 @@ nodo_crear:
 		;RAX ya tiene el puntero del bloque de memoria pedido, no hace falta moverlo
 		MOV qword [RAX + offset_hijos], NULL
 		MOV qword [RAX + offset_sig], NULL
-
-		CMP BL, '0'
-		JL .a
-		CMP BL, '9'
-		JLE .c
-		CMP BL, 'A'
-		JL .a
-		CMP BL, 'Z'
-		JLE .mayus
-		CMP BL, 'a'
-		JL .a
-		CMP BL, 'z'
-		JLE .c
-		
-	.a:
-		MOV byte [RAX + offset_c], 'a'
-		JMP .salir
-
-	.c:
 		MOV byte [RAX + offset_c], BL
-		JMP .salir
-
-	.mayus:
-		ADD BL, 32
-		MOV byte [RAX + offset_c], BL
-		JMP .salir
-
-	.salir:
 		MOV byte [RAX + offset_fin], FALSE
 
 		POP RBX
@@ -210,5 +190,39 @@ nodo_borrar:
 
 	.salir:	
 		POP RBX
+		POP RBP
+		RET
+
+normalizar:
+		PUSH RBP
+		MOV RBP, RSP
+
+		CMP DIL, '0'
+		JL .a
+		CMP DIL, '9'
+		JLE .c
+		CMP DIL, 'A'
+		JL .a
+		CMP DIL, 'Z'
+		JLE .mayus
+		CMP DIL, 'a'
+		JL .a
+		CMP DIL, 'z'
+		JLE .c
+
+	.a:
+		MOV AL, 'a'
+		JMP .salir
+
+	.c:
+		MOV AL, DIL
+		JMP .salir
+
+	.mayus:
+		ADD DIL, 32
+		MOV AL, BL
+		JMP .salir
+
+	.salir:
 		POP RBP
 		RET

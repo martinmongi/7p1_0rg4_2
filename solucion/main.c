@@ -3,9 +3,10 @@
 
 int main(void) {
 	trie* t = trie_crear();
-	insertar_nodo_en_nivel(&(t->raiz),'a');
-	insertar_nodo_en_nivel(&(t->raiz),'b');
-	insertar_nodo_en_nivel(&(t->raiz),'c');
+	trie_agregar_palabra(t,"casa");
+	trie_agregar_palabra(t,"casco");
+	trie_agregar_palabra(t,"ala");
+	trie_agregar_palabra(t,"cama");
 	trie_imprimir(t,"trie.out");
 	trie_borrar(t);
 

@@ -39,6 +39,7 @@ listaP *predecir_palabras(trie *t, char *teclas);
 
 /* Funciones Auxiliares */
 void nodo_borrar(nodo *n);
+char normalizar(char c);
 
 #ifdef __cplusplus 
 }
