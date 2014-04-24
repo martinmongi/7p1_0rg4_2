@@ -95,3 +95,14 @@ void trie_imprimir(trie *t, char *nombre_archivo){
 	fprintf(f,"\n");
 	fclose(f);
 }
+
+trie *trie_construir(char *nombre_archivo){
+	trie* t = trie_crear();
+	char p[1024];
+	FILE * f = fopen(nombre_archivo, "r");
+	while(fscanf(f, "%s", p) != EOF){
+		trie_agregar_palabra(t,p);
+	}
+	fclose(f);
+	return t;
+}

@@ -2,7 +2,7 @@ global trie_crear
 global nodo_crear
 global insertar_nodo_en_nivel
 global trie_agregar_palabra
-; global trie_construir
+global trie_construir
 global trie_borrar
 global trie_imprimir
 global buscar_palabra
@@ -17,6 +17,7 @@ extern free
 extern fopen
 extern fprintf
 extern fclose
+extern fscanf
 extern palabras
 extern lista_borrar
 
@@ -47,10 +48,12 @@ section .rodata
 section .data
 
 append: DB 'a', 0
+read: DB 'r', 0
 vacio: DB '<vacio>', 0
 lf: DB 10, 0
 string: times 1024 DB '\0'
-formato_string: DB '%s ', 0
+formato_string_out: DB '%s ', 0
+formato_string_in: DB '%s', 0
 
 section .text
 
@@ -205,8 +208,47 @@ trie_agregar_palabra:
 		POP RBP
 		RET
 
+;OK
 trie_construir:
-	; COMPLETAR AQUI EL CODIGO
+		PUSH RBP
+		MOV RBP, RSP
+		PUSH RBX
+		PUSH R12
+
+		MOV R12, RDI		; Nombre_archivo = R12
+
+		call trie_crear
+		MOV RBX, RAX		; T = RBX
+
+		MOV RDI, R12
+		MOV RSI, read		; Nombre_archivo = RDI
+		MOV RAX, 8
+		call fopen
+		MOV R12, RAX		;Puntero a archivo = R12
+
+	 .ciclo:
+	 	MOV RDI, R12
+	 	MOV RSI, formato_string_in
+	 	MOV RDX, string
+	 	MOV RAX, 8
+	 	call fscanf
+	 	TEST EAX, EAX
+	 	JS .salir
+	 	MOV RDI, RBX
+	 	MOV RSI, string
+	 	call trie_agregar_palabra
+	 	JMP .ciclo
+
+	.salir:
+		MOV RDI, R12
+		MOV RAX, 8
+		call fclose
+		MOV RAX, RBX
+
+		POP R12
+		POP RBX
+		POP RBP
+		RET
 
 ;OK
 trie_imprimir:
@@ -250,7 +292,7 @@ trie_imprimir:
 		CMP R14, NULL
 		JE .salir
 		MOV RDI, R12
-		MOV RSI, formato_string
+		MOV RSI, formato_string_out
 		MOV RDX, [R14 + offset_valor]
 		MOV RAX, 8
 		call fprintf
