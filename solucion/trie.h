@@ -42,6 +42,8 @@ listaP *predecir_palabras(trie *t, char *teclas);
 void nodo_borrar(nodo *n);
 char normalizar(char c);
 listaP *palabras(nodo **n, char *prefijo);
+nodo *nodo_prefijo(nodo *n, char *p);
+nodo *nodo_buscar(nodo *n, char c);
 
 #ifdef __cplusplus 
 }
