@@ -106,3 +106,15 @@ trie *trie_construir(char *nombre_archivo){
 	fclose(f);
 	return t;
 }
+
+nodo *nodo_prefijo(nodo *n, char *p){
+	int i = 0;
+
+	while((n != NULL) && (p[i+1] != '\0')){
+		n = nodo_buscar(n, p[i]);
+		n = n->hijos;
+		i++;
+	}
+	n = nodo_buscar(n, p[i]);
+	return n;
+}

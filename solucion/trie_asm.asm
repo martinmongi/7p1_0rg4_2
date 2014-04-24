@@ -6,8 +6,8 @@ global trie_construir
 global trie_borrar
 global trie_imprimir
 global buscar_palabra
-global palabras_con_prefijo
-global trie_pesar
+; global palabras_con_prefijo
+; global trie_pesar
 global nodo_buscar
 global normalizar
 global nodo_prefijo

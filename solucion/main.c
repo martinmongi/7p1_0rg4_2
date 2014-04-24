@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "trie.h"
 
-char prefijo[1024];
+char string[1024];
 
 int main(void) {
 	// trie* t = trie_crear();
@@ -13,13 +13,14 @@ int main(void) {
 	trie *t = trie_construir("trie.in");
 	trie_imprimir(t,"trie.out");
 
-	if(buscar_palabra(t, "ala")) printf("BIEN\n");
-	else printf("TODO MAL MEN\n");
+	printf("%f", trie_pesar(t,(*peso_palabra)));
 
-	prefijo[0] = '\0';
-	listaP* l = palabras(&t->raiz, prefijo);
-	lista_imprimir(l);
-	lista_borrar(l);
+	// prefijo[0] = 'a';
+	// prefijo[1] = 'l';
+	// prefijo[2] = '\0';
+	// listaP* l = palabras_con_prefijo(t, prefijo);
+	// lista_imprimir(l);
+	// lista_borrar(l);
 	trie_borrar(t);
 
     return 0;
