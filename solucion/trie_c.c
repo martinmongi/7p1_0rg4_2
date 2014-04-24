@@ -29,7 +29,7 @@ nodo *nodo_crear(char c){
 	n->fin = false;
 	return n;
 }
-*/
+
 
 nodo *insertar_nodo_en_nivel(nodo **nivel, char c){
 	c = normalizar(c);
@@ -48,6 +48,7 @@ nodo *insertar_nodo_en_nivel(nodo **nivel, char c){
 	printf("Nodo insertado: SI\tP: %p\tHijos: %p\tSig: %p\tChar: %c\n", (void*)(*nivel), (void*)(*nivel)->hijos, (void*)(*nivel)->sig, (*nivel)->c);
 	return n;
 }
+*/
 
 void trie_agregar_palabra(trie *t, char *p){
 	nodo **n = &t->raiz;
@@ -78,9 +79,30 @@ listaP *predecir_palabras(trie *t, char *teclas) {
 }
 
 double peso_palabra(char *palabra) {
-	// COMPLETAR AQUI EL CODIGO
+	int i = 0, sum = 0, count = 0;
+	double avg = 0;
+	while(palabra[i] != '\0'){
+		sum = sum + (int)palabra[i];
+		count++;
+	}
+	if(count > 0) avg = sum/count;
+	return avg;
 }
 
-// listaP *palabras(nodo **n, char *prefijo){
+listaP *palabras(nodo** n, char *prefijo){
+	char palabra[strlen(prefijo) + 2];
+	strncpy(palabra, prefijo, strlen(prefijo) + 1);
+	strncat(palabra, &(*n)->c,1);
+	listaP* l = lista_crear();
 
-// }
+	if((*n)->fin == true)
+		lista_agregar(l, palabra);
+
+	if((*n)->hijos != NULL)
+		lista_concatenar(l, palabras(&(*n)->hijos, palabra));
+
+	if((*n)->sig != NULL)
+		lista_concatenar(l, palabras(&(*n)->sig, prefijo));
+
+	return l;
+}

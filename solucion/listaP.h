@@ -30,6 +30,8 @@ void lista_borrar(listaP *ls);
 // ys al final de xs. Destruye ys.
 void lista_concatenar(listaP *xs, listaP *ys);
 
+void lista_imprimir(listaP *ls);
+
 #ifdef __cplusplus 
 }
 #endif

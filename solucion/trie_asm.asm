@@ -1,6 +1,6 @@
 global trie_crear
 global nodo_crear
-; global insertar_nodo_en_nivel
+global insertar_nodo_en_nivel
 ; global trie_agregar_palabra
 global trie_construir
 global trie_borrar
@@ -112,7 +112,51 @@ nodo_crear:
 		RET
 
 insertar_nodo_en_nivel:
-	; COMPLETAR AQUI EL CODIGO
+		PUSH RBP
+		MOV RBP, RSP
+		PUSH RBX
+		PUSH R12
+
+		MOV RBX, RDI ;nivel a RBX
+		MOV R12B, SIL ;char a R12B
+
+		MOV DIL, R12B
+		call normalizar
+		MOV R12B, AL
+
+	.buscar:
+		CMP qword[RBX], NULL
+		JE .esta
+		MOV RAX, [RBX]
+		CMP [RAX + offset_c], R12B
+		JGE .esta
+		MOV RBX, RAX
+		ADD RBX, offset_sig
+		JMP .buscar
+
+	.esta:
+		CMP qword [RBX], NULL
+		JE .no_esta
+		MOV RAX, [RBX]
+		CMP [RAX + offset_c], R12B
+		JNE .no_esta
+
+		POP R12
+		POP RBX
+		POP RBP
+		RET
+
+	.no_esta:
+		MOV SIL, R12B
+		call nodo_crear
+		MOV R12, [RBX]
+		MOV [RAX + offset_sig], R12
+		MOV [RBX], RAX
+
+		POP R12
+		POP RBX
+		POP RBP
+		RET
 
 trie_agregar_palabra:
 	; COMPLETAR AQUI EL CODIGO

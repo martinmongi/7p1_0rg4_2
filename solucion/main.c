@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "trie.h"
 
 int main(void) {
@@ -8,7 +9,13 @@ int main(void) {
 	trie_agregar_palabra(t,"ala");
 	trie_agregar_palabra(t,"cama");
 	trie_imprimir(t,"trie.out");
+	char* prefijo = malloc(1024);
+	prefijo[0] = '\0';
+	listaP* l = palabras(&t->raiz, prefijo);
+	lista_imprimir(l);
+	lista_borrar(l);
 	trie_borrar(t);
+	free(prefijo);
 
     return 0;
 }

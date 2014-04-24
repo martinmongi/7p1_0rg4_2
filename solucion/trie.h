@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include "listaP.h"
 
 typedef struct nodo_t {
@@ -40,6 +41,7 @@ listaP *predecir_palabras(trie *t, char *teclas);
 /* Funciones Auxiliares */
 void nodo_borrar(nodo *n);
 char normalizar(char c);
+listaP *palabras(nodo **n, char *prefijo);
 
 #ifdef __cplusplus 
 }

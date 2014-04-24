@@ -57,3 +57,13 @@ void lista_concatenar(listaP *xs, listaP *ys) {
     xs->ult = ys->ult;
     free(ys);
 }
+
+void lista_imprimir(listaP *ls){
+    lsnodo* n = ls->prim;
+    printf("[");
+    while(n != NULL){
+        printf("%s, ", n->valor);
+        n = n->sig;
+    }
+    printf("]\n");
+}
