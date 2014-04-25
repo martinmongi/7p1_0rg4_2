@@ -7,12 +7,13 @@ global trie_borrar
 global trie_imprimir
 global buscar_palabra
 global palabras_con_prefijo
-; global trie_pesar
+global trie_pesar
 global nodo_buscar
 global normalizar
 global nodo_prefijo
 global str_len
 global palabras
+global caracteres_de_tecla
 
 extern malloc
 extern free
@@ -369,16 +370,20 @@ trie_pesar:
 
 		MOV RBX, RDI		; Trie en RBX
 		MOV R12, RSI 		; Funcion_pesaje en R12
-		MOV RAX, 0
-		CVTSI2SD XMM8, RAX 	; Sum en XMM8
-		MOV R15, 0			; Count en R15
+		
+		call reset_string
 
-		MOV RDI, [RBX + offset_raiz]
+		MOV RDI, RBX
+		ADD RDI, offset_raiz
 		MOV RSI, string
 		call palabras
 		MOV R13, RAX		; Lista L en R13
 
 		MOV R14, [R13 + offset_prim]	;Lscan en R14
+
+		MOV RAX, 0
+		CVTSI2SD XMM8, RAX 	; Sum en XMM8
+		MOV R15, 0			; Count en R15
 
 	.ciclo:
 		CMP R14, NULL
@@ -690,7 +695,7 @@ palabras:
 	 	call lista_crear
 	 	MOV R13, RAX		; L = R13
 
-	 	CMP RBX, NULL
+	 	CMP qword [RBX], NULL
 	 	JE .salir
 
 	 	MOV R14, [RBX]

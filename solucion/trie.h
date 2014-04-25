@@ -37,6 +37,7 @@ bool buscar_palabra(trie *t, char *p);
 double trie_pesar(trie *t, double (*funcion_pesaje)(char*));
 listaP *palabras_con_prefijo(trie *t, char *pref);
 listaP *predecir_palabras(trie *t, char *teclas);
+const char *caracteres_de_tecla(char tecla);
 
 /* Funciones Auxiliares */
 void nodo_borrar(nodo *n);
@@ -44,6 +45,7 @@ char normalizar(char c);
 listaP *palabras(nodo **n, char *prefijo);
 nodo *nodo_prefijo(nodo *n, char *p);
 nodo *nodo_buscar(nodo *n, char c);
+void combinar(char *teclas, char* pref, listaP* l, int i);
 
 #ifdef __cplusplus 
 }
