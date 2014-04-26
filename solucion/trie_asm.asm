@@ -21,11 +21,11 @@ extern fopen
 extern fprintf
 extern fclose
 extern fscanf
-; extern palabras
 extern lista_borrar
 extern lista_agregar
 extern lista_crear
 extern lista_concatenar
+; extern nodo_prefijo
 
 ; SE RECOMIENDA COMPLETAR LOS DEFINES CON LOS VALORES CORRECTOS
 %define offset_sig 0
@@ -335,7 +335,7 @@ trie_imprimir:
 		POP RBP
 		RET
 
-;OK
+;OK (puede chotearse por nodo_prefijo, pero en principio anda)
 buscar_palabra:
 		PUSH RBP
 		MOV RBP,RSP
@@ -358,7 +358,7 @@ buscar_palabra:
 		POP RBP
 		RET
 
-;OK PONELE
+;OK
 trie_pesar:
 		PUSH RBP
 		MOV RBP,RSP
@@ -415,7 +415,7 @@ trie_pesar:
 		POP RBP
 		RET
 
-;OK
+;OK CHOTEA POR PALABRAS CON PREFIJO
 palabras_con_prefijo:
 		PUSH RBP
 		MOV RBP, RSP
@@ -497,17 +497,17 @@ normalizar:
 		PUSH RBP
 		MOV RBP, RSP
 
-		CMP DIL, '0'
+		CMP DIL, 48 ;0
 		JL .a
-		CMP DIL, '9'
+		CMP DIL, 57 ;9
 		JLE .c
-		CMP DIL, 'A'
+		CMP DIL, 65 ;A
 		JL .a
-		CMP DIL, 'Z'
+		CMP DIL, 90	;Z
 		JLE .mayus
-		CMP DIL, 'a'
+		CMP DIL, 97	;a
 		JL .a
-		CMP DIL, 'z'
+		CMP DIL, 122 ;z
 		JLE .c
 
 	.a:
@@ -520,7 +520,7 @@ normalizar:
 
 	.mayus:
 		ADD DIL, 32
-		MOV AL, BL
+		MOV AL, DIL
 		JMP .salir
 
 	.salir:
@@ -545,7 +545,7 @@ nodo_buscar:
 		POP RBP
 		RET
 
-;OK
+;OK (CHOTEA)
 nodo_prefijo:
 		PUSH RBP
 		MOV RBP,RSP
@@ -566,7 +566,11 @@ nodo_prefijo:
 		MOV RDI, RBX
 		MOV SIL, [R12 + R13]
 		call nodo_buscar
+		MOV RBX, RAX
+		CMP RBX, NULL
+		JE .salta
 		MOV RBX, [RBX + offset_hijos]
+	.salta:
 		INC R13
 		JMP .recorrer
 
@@ -677,6 +681,7 @@ caracteres_de_tecla:
 		POP RBP
 		RET
 
+; OK
 palabras:
 	
 		PUSH RBP
@@ -710,7 +715,7 @@ palabras:
 	 	MOV RSI, string
 	 	call lista_agregar
 
-	 .segui1:
+	.segui1:
 
 		MOV R14, [RBX]
 		CMP qword [R14 + offset_hijos], NULL

@@ -96,6 +96,28 @@ void trie_imprimir(trie *t, char *nombre_archivo){
 	fclose(f);
 }
 
+
+listaP *palabras_con_prefijo(trie *t, char *pref){
+	nodo* n = nodo_prefijo(t->raiz, pref);
+	listaP* l = lista_crear();
+	if(n == NULL) return l;
+	if(n->fin) lista_agregar(l,pref);
+	lista_concatenar(l,palabras(&n->hijos,pref));
+	return l;
+}
+
+nodo *nodo_prefijo(nodo *n, char *p){
+	int i = 0;
+
+	while((n != NULL) && (p[i+1] != '\0')){
+		n = nodo_buscar(n, p[i]);
+		if (n != NULL) n = n->hijos;
+		i++;
+	}
+	n = nodo_buscar(n, p[i]);
+	return n;
+}
+
 trie *trie_construir(char *nombre_archivo){
 	trie* t = trie_crear();
 	char p[1024];
@@ -107,26 +129,7 @@ trie *trie_construir(char *nombre_archivo){
 	return t;
 }
 
-nodo *nodo_prefijo(nodo *n, char *p){
-	int i = 0;
 
-	while((n != NULL) && (p[i+1] != '\0')){
-		n = nodo_buscar(n, p[i]);
-		n = n->hijos;
-		i++;
-	}
-	n = nodo_buscar(n, p[i]);
-	return n;
-}
-
-listaP *palabras_con_prefijo(trie *t, char *pref){
-	nodo* n = nodo_prefijo(t->raiz, pref);
-	listaP* l = lista_crear();
-	if(n == NULL) return l;
-	if(n->fin) lista_agregar(l,pref);
-	lista_concatenar(l,palabras(&n->hijos,pref));
-	return l;
-}
 
 listaP *palabras(nodo** n, char *prefijo){
 
@@ -151,3 +154,24 @@ listaP *palabras(nodo** n, char *prefijo){
 
 	return l;
 }
+
+double trie_pesar(trie *t, double (*funcion_pesaje)(char*)){
+
+ 	char string[1024];
+
+ 	string[0] = '\0';
+ 	listaP* l = palabras(&(t->raiz),string);
+ 	lsnodo* lscan = l->prim;
+
+ 	double sum = 0
+ 	int count = 0;
+
+
+ 	while(lscan != NULL){
+ 		sum += (*funcion_pesaje)(lscan->valor);
+ 		count++;
+ 		lscan = lscan->sig;
+ 	}
+ 	lista_borrar(l);
+ 	return sum/count;
+ }

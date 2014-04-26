@@ -3,39 +3,31 @@
 
 //Funciones para pasar a ASM
 
-// double trie_pesar(trie *t, double (*funcion_pesaje)(char*)){
-	
-// 	char string[1024];
-
-// 	string[0] = '\0';
-// 	listaP* l = palabras(&(t->raiz),string);
-// 	lsnodo* lscan = l->prim;
-
-// 	double sum = 0
-// 	int count = 0;
-	
-
-// 	while(lscan != NULL){
-// 		sum += (*funcion_pesaje)(lscan->valor);
-// 		count++;
-// 		lscan = lscan->sig;
-// 	}
-// 	lista_borrar(l);
-// 	return sum/count;
-// }
-
 // Completar las funciones en C.
 
+//CHOTEA POR PALABRAS CON PREFIJO
 listaP *predecir_palabras(trie *t, char *teclas) {
+
 	listaP *l = lista_crear();
-	
-	return l;
-	// COMPLETAR CODIGO ACAA!!!
+	char str[1024];
+	str[0] = '\0';
+	combinar(teclas,str,l,0);
+
+	lsnodo *lscan = l->prim;
+	listaP *listaFinal = lista_crear();
+	while(lscan != NULL){
+		listaP *lTemp = palabras_con_prefijo(t, lscan->valor);
+		lista_concatenar(listaFinal, lTemp);
+		lscan = lscan->sig;
+	}
+	lista_borrar(l);
+	return listaFinal;
 
 }
 
+//OK
 void combinar(char *teclas, char* pref, listaP* l, int i){
-	if(i == str_len(teclas)){
+	if(i == (int)strlen(teclas)){
 		lista_agregar(l, pref);
 		return;
 	}
@@ -48,6 +40,7 @@ void combinar(char *teclas, char* pref, listaP* l, int i){
 	pref[i] = '\0';
 }
 
+//OK
 double peso_palabra(char *palabra) {
 	int count = 0;
 	double sum = 0, avg = 0;

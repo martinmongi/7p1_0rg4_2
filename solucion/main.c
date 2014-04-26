@@ -13,13 +13,15 @@ int main(void) {
 	trie *t = trie_construir("trie.in");
 	trie_imprimir(t,"trie.out");
 
-	printf("%f\n", trie_pesar(t,(*peso_palabra)));
-
+	//printf("%f\n", trie_pesar(t,(*peso_palabra)));
+	//printf("%d",buscar_palabra(t,"alberto"));
+	listaP *l = predecir_palabras(t, "463");
+	lista_imprimir(l);
 	// prefijo[0] = 'a';
 	// prefijo[1] = '\0';
 	// listaP* l = palabras_con_prefijo(t, prefijo);
 	// lista_imprimir(l);
-	// lista_borrar(l);
+	lista_borrar(l);
 	trie_borrar(t);
 
     return 0;
