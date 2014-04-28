@@ -6,7 +6,7 @@ global trie_construir
 global trie_borrar
 global trie_imprimir
 global buscar_palabra
-global palabras_con_prefijo
+; global palabras_con_prefijo
 global trie_pesar
 global nodo_buscar
 global normalizar
@@ -26,6 +26,7 @@ extern lista_borrar
 extern lista_agregar
 extern lista_crear
 extern lista_concatenar
+extern palabras_con_prefijo
 
 ; SE RECOMIENDA COMPLETAR LOS DEFINES CON LOS VALORES CORRECTOS
 %define offset_sig 0
@@ -402,9 +403,17 @@ trie_pesar:
 		MOV RDI, R13
 		call lista_borrar
 
+		CMP R15, 0
+		JE .vacio
+
 		CVTSI2SD XMM9, R15	;Count en XMM2
 		DIVSD XMM8, XMM9
+
+	.vacio:
+	
 		MOVSD XMM0, XMM8
+
+	
 
 
 		POP R15
@@ -416,56 +425,56 @@ trie_pesar:
 		RET
 
 ;OK CHOTEA POR PALABRAS CON PREFIJO
-palabras_con_prefijo:
-		PUSH RBP
-		MOV RBP, RSP
-		PUSH RBX
-		PUSH R12
-		PUSH R13
-		PUSH R14
+; palabras_con_prefijo:
+; 		PUSH RBP
+; 		MOV RBP, RSP
+; 		PUSH RBX
+; 		PUSH R12
+; 		PUSH R13
+; 		PUSH R14
 
 		
 
-		MOV RBX, RDI		; Trie = RBX ; DESPUES LO PIERDO
-		MOV R12, RSI 		; Pref = R12
+; 		MOV RBX, RDI		; Trie = RBX ; DESPUES LO PIERDO
+; 		MOV R12, RSI 		; Pref = R12
 
-		MOV RDI, [RBX + offset_raiz]
-		MOV RSI, R12
-		call nodo_prefijo
-		MOV RBX, RAX		; N = RBX
+; 		MOV RDI, [RBX + offset_raiz]
+; 		MOV RSI, R12
+; 		call nodo_prefijo
+; 		MOV RBX, RAX		; N = RBX
 
-		call lista_crear
-		MOV R13, RAX		; L = R13
+; 		call lista_crear
+; 		MOV R13, RAX		; L = R13
 
-		CMP RBX, NULL
-		JE .salir
+; 		CMP RBX, NULL
+; 		JE .salir
 
-		CMP byte [RBX + offset_fin], FALSE
-		JE .noespalabra
-		MOV RDI, R13
-		MOV RSI, R12
-		call lista_agregar
+; 		CMP byte [RBX + offset_fin], FALSE
+; 		JE .noespalabra
+; 		MOV RDI, R13
+; 		MOV RSI, R12
+; 		call lista_agregar
 
-	.noespalabra:
-		MOV RDI, RBX
-		ADD RDI, offset_hijos
-		MOV RSI, R12
+; 	.noespalabra:
+; 		MOV RDI, RBX
+; 		ADD RDI, offset_hijos
+; 		MOV RSI, R12
 
-		call palabras
+; 		call palabras
 
-		MOV RSI, RAX
-		MOV RDI, R13
-		call lista_concatenar
+; 		MOV RSI, RAX
+; 		MOV RDI, R13
+; 		call lista_concatenar
 
-	.salir:
-		MOV RAX, R13
+; 	.salir:
+; 		MOV RAX, R13
 
-		POP R14
-		POP R13
-		POP R12
-		POP RBX
-		POP RBP
-		RET
+; 		POP R14
+; 		POP R13
+; 		POP R12
+; 		POP RBX
+; 		POP RBP
+; 		RET
 
 
 ;OK

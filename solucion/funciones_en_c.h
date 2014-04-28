@@ -98,11 +98,21 @@ void trie_imprimir(trie *t, char *nombre_archivo){
 
 
 listaP *palabras_con_prefijo(trie *t, char *pref){
+	char str[1024]
 	nodo* n = nodo_prefijo(t->raiz, pref);
 	listaP* l = lista_crear();
 	if(n == NULL) return l;
 	if(n->fin) lista_agregar(l,pref);
-	lista_concatenar(l,palabras(&n->hijos,pref));
+	listaP * lista_sufijos = palabras(&n->hijos,pref));
+	lsnodo * lscan = lista_sufijos->prim;
+	while(lscan != NULL){
+		str[0] = '\0';
+		strcpy(str,pref);
+		strcat(str,lscan->valor);
+		lista_agregar(l,str);
+		lscan = lscan->sig;
+	}
+	lista_borrar(lista_sufijos);
 	return l;
 }
 

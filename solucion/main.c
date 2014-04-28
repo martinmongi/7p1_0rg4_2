@@ -19,8 +19,8 @@ int main(void) {
 	// lista_imprimir(l);
 	// prefijo[0] = 'a';
 	// prefijo[1] = '\0';
-	// listaP* l = palabras_con_prefijo(t, "god");
-	// lista_imprimir(l);
+	listaP* l = palabras_con_prefijo(t, "god");
+	lista_imprimir(l);
 	lista_borrar(l);
 	trie_borrar(t);
 
