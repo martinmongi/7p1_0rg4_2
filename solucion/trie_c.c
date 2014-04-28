@@ -12,7 +12,7 @@ listaP *predecir_palabras(trie *t, char *teclas) {
 	char str[1024];
 	str[0] = '\0';
 	combinar(teclas,str,l,0);
-
+	
 	lsnodo *lscan = l->prim;
 	listaP *listaFinal = lista_crear();
 	while(lscan != NULL){

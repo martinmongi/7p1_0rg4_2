@@ -14,6 +14,7 @@ global nodo_prefijo
 global str_len
 global palabras
 global caracteres_de_tecla
+global reset_string
 
 extern malloc
 extern free
@@ -25,7 +26,6 @@ extern lista_borrar
 extern lista_agregar
 extern lista_crear
 extern lista_concatenar
-; extern nodo_prefijo
 
 ; SE RECOMIENDA COMPLETAR LOS DEFINES CON LOS VALORES CORRECTOS
 %define offset_sig 0
@@ -424,7 +424,7 @@ palabras_con_prefijo:
 		PUSH R13
 		PUSH R14
 
-		call reset_string
+		
 
 		MOV RBX, RDI		; Trie = RBX ; DESPUES LO PIERDO
 		MOV R12, RSI 		; Pref = R12
@@ -450,6 +450,7 @@ palabras_con_prefijo:
 		MOV RDI, RBX
 		ADD RDI, offset_hijos
 		MOV RSI, R12
+
 		call palabras
 
 		MOV RSI, RAX
@@ -740,6 +741,7 @@ palabras:
 		MOV RDI, [RBX]
 		ADD RDI, offset_sig
 		MOV RSI, string
+		
 		call palabras
 		MOV RSI, RAX
 		MOV RDI, R13

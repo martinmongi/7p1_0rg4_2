@@ -47,6 +47,7 @@ listaP *palabras(nodo **n, char *prefijo);
 nodo *nodo_prefijo(nodo *n, char *p);
 nodo *nodo_buscar(nodo *n, char c);
 void combinar(char *teclas, char* pref, listaP* l, int i);
+void reset_string();
 
 #ifdef __cplusplus 
 }
