@@ -6,7 +6,7 @@ global trie_construir
 global trie_borrar
 global trie_imprimir
 global buscar_palabra
-; global palabras_con_prefijo
+global palabras_con_prefijo
 global trie_pesar
 global nodo_buscar
 global normalizar
@@ -18,7 +18,7 @@ global palabras
 global caracteres_de_tecla
 global reset_string
 
-extern palabras_con_prefijo
+; extern palabras_con_prefijo
 extern malloc
 extern free
 extern fopen
@@ -424,83 +424,81 @@ trie_pesar:
 		RET
 
 ;OK
-; palabras_con_prefijo:
-; 		PUSH RBP
-; 		MOV RBP, RSP
-; 		PUSH RBX
-; 		PUSH R12
-; 		PUSH R13
-; 		PUSH R14
-; 		PUSH R15
-; 		SUB RSP, 8
+palabras_con_prefijo:
+		PUSH RBP
+		MOV RBP, RSP
+		PUSH RBX
+		PUSH R12
+		PUSH R13
+		PUSH R14
+		PUSH R15
+		SUB RSP, 1032
 		
-; 		MOV RBX, RDI		; Trie = RBX ; DESPUES LO PIERDO
-; 		MOV R12, RSI 		; Pref = R12
+		MOV RBX, RDI		; Trie = RBX ; DESPUES LO PIERDO
+		MOV R12, RSI 		; Pref = R12
 
-; 		MOV RDI, [RBX + offset_raiz]
-; 		MOV RSI, R12
-; 		call nodo_prefijo
-; 		MOV RBX, RAX		; N = RBX
+		MOV RDI, [RBX + offset_raiz]
+		MOV RSI, R12
+		call nodo_prefijo
+		MOV RBX, RAX		; N = RBX
 
-; 		call lista_crear
-; 		MOV R13, RAX		; L = R13
+		call lista_crear
+		MOV R13, RAX		; L = R13
 
-; 		CMP RBX, NULL
-; 		JE .salir
+		CMP RBX, NULL
+		JE .salir
 
-; 		CMP byte [RBX + offset_fin], FALSE
-; 		JE .noespalabra
-; 		MOV RDI, R13
-; 		MOV RSI, R12
-; 		call lista_agregar
+		CMP byte [RBX + offset_fin], FALSE
+		JE .noespalabra
+		MOV RDI, R13
+		MOV RSI, R12
+		call lista_agregar
 
-; 	.noespalabra:
-; 		MOV RDI, RBX
-; 		ADD RDI, offset_hijos
-; 		MOV RSI, R12
+	.noespalabra:
+		MOV RDI, RBX
+		ADD RDI, offset_hijos
+		MOV RSI, R12
 
-; 		call palabras
+		call palabras
 
-;  		MOV R15, RAX					; lista_sufijos = R15
-; 		MOV R14, [R15 + offset_prim]	; lscan = R14
+ 		MOV R15, RAX					; lista_sufijos = R15
+		MOV R14, [R15 + offset_prim]	; lscan = R14
 
-; 	.ciclo:
-; 		CMP R14, NULL
-; 		JE .salir_ciclo
+	.ciclo:
+		CMP R14, NULL
+		JE .salir_ciclo
 
-; 		call reset_string
+		MOV RDI, RSP
+		MOV RSI, R12
+		call str_cpy
 
-; 		MOV RDI, string
-; 		MOV RSI, R12
-; 		call str_cpy
+		MOV RDI, RSP
+		MOV RSI, [R14 + offset_valor]
+		call str_cat
 
-; 		MOV RDI, string
-; 		MOV RSI, [R14 + offset_valor]
-; 		call str_cat
+		MOV RDI, R13
+		MOV RSI, RSP
+		call lista_agregar
 
-; 		MOV RDI, R13
-; 		MOV RSI, string
-; 		call lista_agregar
+		MOV R14, [R14 + offset_sig_lnodo]
+		JMP .ciclo
 
-; 		MOV R14, [R14 + offset_sig_lnodo]
-; 		JMP .ciclo
+	.salir_ciclo:
+		MOV RDI, R15
+ 		call lista_borrar
 
-; 	.salir_ciclo:
-; 		MOV RDI, R15
-;  		call lista_borrar
-
-;  	.salir:
+ 	.salir:
  		
-; 		MOV RAX, R13
+		MOV RAX, R13
 		
-; 		ADD RSP, 8
-; 		POP R15
-; 		POP R14
-; 		POP R13
-; 		POP R12
-; 		POP RBX
-; 		POP RBP
-; 		RET
+		ADD RSP, 1032
+		POP R15
+		POP R14
+		POP R13
+		POP R12
+		POP RBX
+		POP RBP
+		RET
 
 
 ;OK

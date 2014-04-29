@@ -5,25 +5,25 @@
 
 // Completar las funciones en C.
 
-listaP *palabras_con_prefijo(trie *t, char *pref){
-	char str[1024];
-	//printf(" PIDO PREFIJO: %s\n",pref);
-	nodo* n = nodo_prefijo(t->raiz, pref);
-	listaP* l = lista_crear();
-	if(n == NULL) return l;
-	if(n->fin) lista_agregar(l,pref);
-	listaP * lista_sufijos = palabras(&n->hijos,pref);
-	lsnodo * lscan = lista_sufijos->prim;
-	while(lscan != NULL){
-		str[0] = (char)0;
-		str_cpy(str,pref);
-		str_cat(str,lscan->valor);
-		lista_agregar(l,str);
-		lscan = lscan->sig;
-	}
-	lista_borrar(lista_sufijos);
-	return l;
-}
+// listaP *palabras_con_prefijo(trie *t, char *pref){
+// 	char str[1024];
+// 	//printf(" PIDO PREFIJO: %s\n",pref);
+// 	nodo* n = nodo_prefijo(t->raiz, pref);
+// 	listaP* l = lista_crear();
+// 	if(n == NULL) return l;
+// 	if(n->fin) lista_agregar(l,pref);
+// 	listaP * lista_sufijos = palabras(&n->hijos,pref);
+// 	lsnodo * lscan = lista_sufijos->prim;
+// 	while(lscan != NULL){
+// 		str[0] = (char)0;
+// 		str_cpy(str,pref);
+// 		str_cat(str,lscan->valor);
+// 		lista_agregar(l,str);
+// 		lscan = lscan->sig;
+// 	}
+// 	lista_borrar(lista_sufijos);
+// 	return l;
+// }
 
 //CHOTEA POR PALABRAS CON PREFIJO
 listaP *predecir_palabras(trie *t, char *teclas) {
