@@ -48,6 +48,9 @@ nodo *nodo_prefijo(nodo *n, char *p);
 nodo *nodo_buscar(nodo *n, char c);
 void combinar(char *teclas, char* pref, listaP* l, int i);
 void reset_string();
+int str_len(char* str);
+void str_cpy(char* des, char* str);
+void str_cat(char* des, char* str);
 
 #ifdef __cplusplus 
 }
