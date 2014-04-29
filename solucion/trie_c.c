@@ -7,6 +7,7 @@
 
 listaP *palabras_con_prefijo(trie *t, char *pref){
 	char str[1024];
+	//printf(" PIDO PREFIJO: %s\n",pref);
 	nodo* n = nodo_prefijo(t->raiz, pref);
 	listaP* l = lista_crear();
 	if(n == NULL) return l;
@@ -14,7 +15,7 @@ listaP *palabras_con_prefijo(trie *t, char *pref){
 	listaP * lista_sufijos = palabras(&n->hijos,pref);
 	lsnodo * lscan = lista_sufijos->prim;
 	while(lscan != NULL){
-		str[0] = '\0';
+		str[0] = (char)0;
 		strcpy(str,pref);
 		strcat(str,lscan->valor);
 		lista_agregar(l,str);
@@ -27,9 +28,11 @@ listaP *palabras_con_prefijo(trie *t, char *pref){
 //CHOTEA POR PALABRAS CON PREFIJO
 listaP *predecir_palabras(trie *t, char *teclas) {
 
+
+	//printf(" QUIERO PREDECIR: %s\n",teclas);
 	listaP *l = lista_crear();
 	char str[1024];
-	str[0] = '\0';
+	str[0] = (char)0;
 	combinar(teclas,str,l,0);
 	
 	lsnodo *lscan = l->prim;

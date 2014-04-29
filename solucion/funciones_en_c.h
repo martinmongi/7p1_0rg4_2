@@ -173,7 +173,7 @@ double trie_pesar(trie *t, double (*funcion_pesaje)(char*)){
  	listaP* l = palabras(&(t->raiz),string);
  	lsnodo* lscan = l->prim;
 
- 	double sum = 0
+ 	double sum = 0; 
  	int count = 0;
 
 

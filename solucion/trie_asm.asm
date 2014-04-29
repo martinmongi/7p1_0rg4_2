@@ -58,7 +58,7 @@ append: DB 'a', 0
 read: DB 'r', 0
 vacio: DB '<vacio>', 0
 lf: DB 10, 0
-string: times 1024 DB '\0'
+string: times 1024 DB 0
 formato_string_out: DB '%s ', 0
 formato_string_in: DB '%s', 0
 tecla1: DB '1', 0
@@ -410,11 +410,8 @@ trie_pesar:
 		DIVSD XMM8, XMM9
 
 	.vacio:
-	
+
 		MOVSD XMM0, XMM8
-
-	
-
 
 		POP R15
 		POP R14
@@ -426,41 +423,41 @@ trie_pesar:
 
 ;OK CHOTEA POR PALABRAS CON PREFIJO
 ; palabras_con_prefijo:
-; 		PUSH RBP
-; 		MOV RBP, RSP
-; 		PUSH RBX
-; 		PUSH R12
-; 		PUSH R13
-; 		PUSH R14
+	; 	PUSH RBP
+	; 	MOV RBP, RSP
+	; 	PUSH RBX
+	; 	PUSH R12
+	; 	PUSH R13
+	; 	PUSH R14
 
 		
 
-; 		MOV RBX, RDI		; Trie = RBX ; DESPUES LO PIERDO
-; 		MOV R12, RSI 		; Pref = R12
+	; 	MOV RBX, RDI		; Trie = RBX ; DESPUES LO PIERDO
+	; 	MOV R12, RSI 		; Pref = R12
 
-; 		MOV RDI, [RBX + offset_raiz]
-; 		MOV RSI, R12
-; 		call nodo_prefijo
-; 		MOV RBX, RAX		; N = RBX
+	; 	MOV RDI, [RBX + offset_raiz]
+	; 	MOV RSI, R12
+	; 	call nodo_prefijo
+	; 	MOV RBX, RAX		; N = RBX
 
-; 		call lista_crear
-; 		MOV R13, RAX		; L = R13
+	; 	call lista_crear
+	; 	MOV R13, RAX		; L = R13
 
-; 		CMP RBX, NULL
-; 		JE .salir
+	; 	CMP RBX, NULL
+	; 	JE .salir
 
-; 		CMP byte [RBX + offset_fin], FALSE
-; 		JE .noespalabra
-; 		MOV RDI, R13
-; 		MOV RSI, R12
-; 		call lista_agregar
+	; 	CMP byte [RBX + offset_fin], FALSE
+	; 	JE .noespalabra
+	; 	MOV RDI, R13
+	; 	MOV RSI, R12
+	; 	call lista_agregar
 
-; 	.noespalabra:
-; 		MOV RDI, RBX
-; 		ADD RDI, offset_hijos
-; 		MOV RSI, R12
+	; .noespalabra:
+	; 	MOV RDI, RBX
+	; 	ADD RDI, offset_hijos
+	; 	MOV RSI, R12
 
-; 		call palabras
+	; 	call palabras
 
 ; 		MOV RSI, RAX
 ; 		MOV RDI, R13
