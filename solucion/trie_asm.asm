@@ -233,6 +233,7 @@ trie_construir:
 		MOV RBP, RSP
 		PUSH RBX
 		PUSH R12
+		SUB RSP, 1024
 
 		MOV R12, RDI		; Nombre_archivo = R12
 
@@ -248,13 +249,13 @@ trie_construir:
 	 .ciclo:
 	 	MOV RDI, R12
 	 	MOV RSI, formato_string_in
-	 	MOV RDX, string
+	 	MOV RDX, RSP
 	 	MOV RAX, 8
 	 	call fscanf
 	 	TEST EAX, EAX
 	 	JS .salir
 	 	MOV RDI, RBX
-	 	MOV RSI, string
+	 	MOV RSI, RSP
 	 	call trie_agregar_palabra
 	 	JMP .ciclo
 
@@ -264,6 +265,7 @@ trie_construir:
 		call fclose
 		MOV RAX, RBX
 
+		ADD RSP, 1024
 		POP R12
 		POP RBX
 		POP RBP
@@ -370,6 +372,7 @@ trie_pesar:
 		PUSH R13
 		PUSH R14
 		PUSH R15
+		SUB RSP, 16
 
 		MOV RBX, RDI		; Trie en RBX
 		MOV R12, RSI 		; Funcion_pesaje en R12
@@ -393,7 +396,10 @@ trie_pesar:
 		JE .salir
 
 		MOV RDI, [R14 + offset_valor]
+
+		MOVSD [RSP], XMM8
 		call R12
+		MOVSD XMM8, [RSP]
 		; SACA EL VALOR POR XMM0
 		ADDSD XMM8, XMM0
 
@@ -415,6 +421,7 @@ trie_pesar:
 
 		MOVSD XMM0, XMM8
 
+		ADD RSP, 16
 		POP R15
 		POP R14
 		POP R13
